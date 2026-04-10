@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar with Tasks</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+  }
+
+  .calendar {
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+
+    padding-left: 120px;
+    height: 90vh;
+    width: 90vw;
+  }
+
+  .header {
+    text-align: center;
+    padding: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    background: #08e2ff;
+    color: white;
+  }
+
+  .days, .dates {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+  }
+
+  .days {
+    background: #eef2f7;
+    font-weight: bold;
+    padding: 10px 0;
+  }
+
+  .dates {
+    flex: 1;
+  }
+
+  .date-box {
+    border: 1px solid #eee;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    overflow: hidden;
+  }
+
+  .date-number {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .task {
+    font-size: 12px;
+    background: #e6f0ff;
+    padding: 2px 4px;
+    margin-bottom: 3px;
+    border-radius: 4px;
+    width: 100%;
+    text-align: left;
+  }
+
+  .date-box:hover {
+    background: #f5faff;
+    cursor: pointer;
+  }
+
+.form-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input-wrap label {
+  font-size: 12px;
+  color: #6b7280;
+  letter-spacing: 0.04em;
+}
+.input-container {
+  background: #f9f9f8;
+  border: 0.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  max-width: 480px;
+  margin: 0 auto;
+}
+input[type="number"],
+input[type="text"] {
+  height: 38px;
+  padding: 0 12px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+input[type="number"] { width: 110px; }
+input[type="text"]   { width: 220px; }
+
+input::placeholder { color: #767676; }
+
+input:hover:not(:focus) { border-color: #9ca3af; }
+
+input:focus {
+  border-color: #6b7280;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.07);
+}
+
+button {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #111;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.12s, transform 0.1s;
+}
+
+.voice-button {
+  display: block;
+  margin: 50px auto;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color:crimson;
+}
+
+
+</style>
+
+</head>
+<body>
+
+<!-- FORM -->
+<div class="input-container" style="padding:10px;">
+  <input type="number" id="dayInput" placeholder="Day (1-30)" min="1" max="30">
+  <input type="text" id="taskInput" placeholder="Task">
+  <button onclick="addTask()">Add Task</button>
+</div>
+
+<!-- CALENDER-->
+<div class="calendar">
+  <!-- Header -->
+  <div class="header">April 2026</div>
+  <!-- Days -->
+  <div class="days">
+    <div>Sun</div><div>Mon</div><div>Tue</div>
+    <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+  </div>
+<!-- Dates-->
+  <div class="dates">
+
+    <!--empty date boxes in starting-->
+    <div></div><div></div><div></div>
+
+    <!-- Each bix can contain task divs-->
+    <div class="date-box" data-day="1">
+      <div class="date-number">1</div>
+      <div class="task">Task 1</div>
+      <div class="task">Task 2</div>
+      <div class="task">Task 3</div>
+    </div>
+
+    <!-- All empty date boxes-->
+    <div class="date-box" data-day="2"><div class="date-number">2</div></div>
+    <div class="date-box" data-day="3"><div class="date-number">3</div></div>
+    <div class="date-box" data-day="4"><div class="date-number">4</div></div>
+
+    <div class="date-box" data-day="5"><div class="date-number">5</div></div>
+    <div class="date-box" data-day="6"><div class="date-number">6</div></div>
+    <div class="date-box" data-day="7"><div class="date-number">7</div></div>
+    <div class="date-box" data-day="8"><div class="date-number">8</div></div>
+    <div class="date-box" data-day="9"><div class="date-number">9</div></div>
+    <div class="date-box" data-day="10"><div class="date-number">10</div></div>
+    <div class="date-box" data-day="11"><div class="date-number">11</div></div>
+
+    <div class="date-box" data-day="12"><div class="date-number">12</div></div>
+    <div class="date-box" data-day="13"><div class="date-number">13</div></div>
+    <div class="date-box" data-day="14"><div class="date-number">14</div></div>
+    <div class="date-box" data-day="15"><div class="date-number">15</div></div>
+    <div class="date-box" data-day="16"><div class="date-number">16</div></div>
+    <div class="date-box" data-day="17"><div class="date-number">17</div></div>
+    <div class="date-box" data-day="18"><div class="date-number">18</div></div>
+
+    <div class="date-box" data-day="19"><div class="date-number">19</div></div>
+    <div class="date-box" data-day="20"><div class="date-number">20</div></div>
+    <div class="date-box" data-day="21"><div class="date-number">21</div></div>
+    <div class="date-box" data-day="22"><div class="date-number">22</div></div>
+    <div class="date-box" data-day="23"><div class="date-number">23</div></div>
+    <div class="date-box" data-day="24"><div class="date-number">24</div></div>
+    <div class="date-box" data-day="25"><div class="date-number">25</div></div>
+
+    <div class="date-box" data-day="26"><div class="date-number">26</div></div>
+    <div class="date-box" data-day="27"><div class="date-number">27</div></div>
+    <div class="date-box" data-day="28"><div class="date-number">28</div></div>
+    <div class="date-box" data-day="29"><div class="date-number">29</div></div>
+    <div class="date-box" data-day="30"><div class="date-number">30</div></div>
+  </div>
+
+  <!-- Voice button -->
+<button class="voice-button" onclick="startRecording()"></button>
+</div>
+
+
+<script>
+
+//records audio till silence occur and only extracts the first sentence
+function startRecording() {
+
+  //Browser's speech recogntion function that converts speech to text
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+  recognition.continuous = false;        // stop after one sentence
+  recognition.interimResults = false;   // only final result
+
+  //Extracts the text
+  recognition.onresult = function (event) {
+    const text = event.results[0][0].transcript;
+
+    //Sends POST req to backend
+    sendToBackend(text);
+
+    recognition.stop(); 
+  };
+
+  //--------------Error handlings-----
+  recognition.onerror = function (event) {
+    console.error(event.error);
+    recognition.stop();
+  };
+  recognition.onend = function () {
+    console.log("Recording stopped");
+  };
+
+  //----------------------------------
+  recognition.start();
+}
+
+// Function that sends POST request to backend
+function sendToBackend(text) {
+
+  fetch("/add_event/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ text: text })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log("Backend response:", data);
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+}
+
+
+function addTask() {
+
+  // Store day and task inputs
+  const day = document.getElementById("dayInput").value;
+  const taskText = document.getElementById("taskInput").value.trim();
+
+  //Error handlings
+  if (!day || !taskText) return;
+  if (day < 1 || day > 30) {
+    alert("Enter valid day (1-30)");
+    return;
+  }
+
+  // find inserted day-box
+  const box = document.querySelector(`.date-box[data-day='${day}']`);
+  if (!box) {
+    alert("Invalid day");
+    return;
+  }
+
+  //create a div of taskText and place at the found box
+  const task = document.createElement("div");
+  task.className = "task";
+  task.textContent = taskText;
+  box.appendChild(task);
+
+  document.getElementById("taskInput").value = "";
+  document.getElementById("dayInput").value = "";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+Flow:
+1. Red speech button is clicked 
+2. on click startRecording() function runs
+3. startRecording() takes the speech input through browser
+4. in the same fucntion, that input is sent to "add_event/" using sendToBackend(text) function
+5. in backend urls.py file, on add_event/ path add_event function gets runs
+6. add_event function takes that input text and returns the response in json
+7. again sendToBackend function recevies that json response and processes it
