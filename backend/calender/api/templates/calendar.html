@@ -29,7 +29,7 @@
   }
 
   .header {
-    text-align: center;
+    user_input-align: center;
     padding: 20px;
     font-size: 28px;
     font-weight: bold;
@@ -40,7 +40,7 @@
   .days, .dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    text-align: center;
+    user_input-align: center;
   }
 
   .days {
@@ -75,7 +75,7 @@
     margin-bottom: 3px;
     border-radius: 4px;
     width: 100%;
-    text-align: left;
+    user_input-align: left;
   }
 
   .date-box:hover {
@@ -110,7 +110,7 @@
   margin: 0 auto;
 }
 input[type="number"],
-input[type="text"] {
+input[type="user_input"] {
   height: 38px;
   padding: 0 12px;
   border: 1.5px solid #d1d5db;
@@ -123,7 +123,7 @@ input[type="text"] {
 }
 
 input[type="number"] { width: 110px; }
-input[type="text"]   { width: 220px; }
+input[type="user_input"]   { width: 220px; }
 
 input::placeholder { color: #767676; }
 
@@ -164,7 +164,7 @@ button {
 <!-- FORM -->
 <div class="input-container" style="padding:10px;">
   <input type="number" id="dayInput" placeholder="Day (1-30)" min="1" max="30">
-  <input type="text" id="taskInput" placeholder="Task">
+  <input type="user_input" id="taskInput" placeholder="Task">
   <button onclick="addTask()">Add Task</button>
 </div>
 
@@ -237,18 +237,18 @@ button {
 //records audio till silence occur and only extracts the first sentence
 function startRecording() {
 
-  //Browser's speech recogntion function that converts speech to text
+  //Browser's speech recogntion function that converts speech to user_input
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
   recognition.continuous = false;        // stop after one sentence
   recognition.interimResults = false;   // only final result
 
-  //Extracts the text
+  //Extracts the user_input
   recognition.onresult = function (event) {
-    const text = event.results[0][0].transcript;
+    const user_input = event.results[0][0].transcript;
 
     //Sends POST req to backend
-    sendToBackend(text);
+    sendToBackend(user_input);
 
     recognition.stop(); 
   };
@@ -267,14 +267,14 @@ function startRecording() {
 }
 
 // Function that sends POST request to backend
-function sendToBackend(text) {
+function sendToBackend(user_input) {
 
   fetch("/add_event/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ text: text })
+    body: JSON.stringify({ user_input: user_input })
   })
   .then(response => response.json())
   .then(data => {
