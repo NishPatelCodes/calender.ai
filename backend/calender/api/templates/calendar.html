@@ -1,3 +1,8 @@
+<!-- It has a bug: since we are not using hardcoded date anymore, the function addeventAi can;t find date box to 
+add event on the box -->
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,6 +152,7 @@ button {
 }
 
 .voice-button {
+  padding-bottom: 70px;
   display: block;
   margin: 50px auto;
   width: 70px;
@@ -170,65 +176,95 @@ button {
 
 <!-- CALENDER-->
 <div class="calendar">
-  <!-- Header -->
+
+  <!-- April 2026 -->
   <div class="header">April 2026</div>
-  <!-- Days -->
   <div class="days">
     <div>Sun</div><div>Mon</div><div>Tue</div>
     <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
   </div>
-<!-- Dates-->
-  <div class="dates">
 
-    <!--empty date boxes in starting-->
+  <div class="dates">
     <div></div><div></div><div></div>
 
-    <!-- Each bix can contain task divs-->
-    <div class="date-box" data-day="1">
-      <div class="date-number">1</div>
-      <div class="task">Task 1</div>
-      <div class="task">Task 2</div>
-      <div class="task">Task 3</div>
-    </div>
+    <!-- Auto days -->
+    <!-- Repeat pattern for month -->
+    <script>
+      const datesContainer = document.currentScript.parentElement;
 
-    <!-- All empty date boxes-->
-    <div class="date-box" data-day="2"><div class="date-number">2</div></div>
-    <div class="date-box" data-day="3"><div class="date-number">3</div></div>
-    <div class="date-box" data-day="4"><div class="date-number">4</div></div>
+      function generateMonth(year, month, totalDays) {
+        for (let d = 1; d <= totalDays; d++) {
+          const box = document.createElement("div");
+          box.className = "date-box";
 
-    <div class="date-box" data-day="5"><div class="date-number">5</div></div>
-    <div class="date-box" data-day="6"><div class="date-number">6</div></div>
-    <div class="date-box" data-day="7"><div class="date-number">7</div></div>
-    <div class="date-box" data-day="8"><div class="date-number">8</div></div>
-    <div class="date-box" data-day="9"><div class="date-number">9</div></div>
-    <div class="date-box" data-day="10"><div class="date-number">10</div></div>
-    <div class="date-box" data-day="11"><div class="date-number">11</div></div>
+          const dayStr = String(d).padStart(2, "0");
+          const monthStr = String(month).padStart(2, "0");
 
-    <div class="date-box" data-day="12"><div class="date-number">12</div></div>
-    <div class="date-box" data-day="13"><div class="date-number">13</div></div>
-    <div class="date-box" data-day="14"><div class="date-number">14</div></div>
-    <div class="date-box" data-day="15"><div class="date-number">15</div></div>
-    <div class="date-box" data-day="16"><div class="date-number">16</div></div>
-    <div class="date-box" data-day="17"><div class="date-number">17</div></div>
-    <div class="date-box" data-day="18"><div class="date-number">18</div></div>
+          box.setAttribute("data-day", `${year}-${monthStr}-${dayStr}`);
 
-    <div class="date-box" data-day="19"><div class="date-number">19</div></div>
-    <div class="date-box" data-day="20"><div class="date-number">20</div></div>
-    <div class="date-box" data-day="21"><div class="date-number">21</div></div>
-    <div class="date-box" data-day="22"><div class="date-number">22</div></div>
-    <div class="date-box" data-day="23"><div class="date-number">23</div></div>
-    <div class="date-box" data-day="24"><div class="date-number">24</div></div>
-    <div class="date-box" data-day="25"><div class="date-number">25</div></div>
+          box.innerHTML = `<div class="date-number">${d}</div>`;
+          datesContainer.appendChild(box);
+        }
+      }
 
-    <div class="date-box" data-day="26"><div class="date-number">26</div></div>
-    <div class="date-box" data-day="27"><div class="date-number">27</div></div>
-    <div class="date-box" data-day="28"><div class="date-number">28</div></div>
-    <div class="date-box" data-day="29"><div class="date-number">29</div></div>
-    <div class="date-box" data-day="30"><div class="date-number">30</div></div>
+      // April
+      generateMonth(2026, 4, 30);
+    </script>
   </div>
 
-  <!-- Voice button -->
-<button class="voice-button" onclick="startRecording()"></button>
+  <!-- Repeat for all months -->
+  <script>
+    const calendar = document.querySelector(".calendar");
+
+    const months = [
+      { name: "January 2026", days: 31, m: 1 },
+      { name: "February 2026", days: 28, m: 2 },
+      { name: "March 2026", days: 31, m: 3 },
+      { name: "April 2026", days: 30, m: 4 },
+      { name: "May 2026", days: 31, m: 5 },
+      { name: "June 2026", days: 30, m: 6 },
+      { name: "July 2026", days: 31, m: 7 },
+      { name: "August 2026", days: 31, m: 8 },
+      { name: "September 2026", days: 30, m: 9 },
+      { name: "October 2026", days: 31, m: 10 },
+      { name: "November 2026", days: 30, m: 11 },
+      { name: "December 2026", days: 31, m: 12 }
+    ];
+
+    calendar.innerHTML = "";
+
+    months.forEach(month => {
+      const section = document.createElement("div");
+
+      section.innerHTML = `
+        <div class="header">${month.name}</div>
+        <div class="days">
+          <div>Sun</div><div>Mon</div><div>Tue</div>
+          <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+        <div class="dates"></div>
+      `;
+
+      const datesDiv = section.querySelector(".dates");
+
+      for (let d = 1; d <= month.days; d++) {
+        const box = document.createElement("div");
+        box.className = "date-box";
+
+        const dayStr = String(d).padStart(2, "0");
+        const monthStr = String(month.m).padStart(2, "0");
+
+        box.setAttribute("data-day", `2026-${monthStr}-${dayStr}`);
+        box.innerHTML = `<div class="date-number">${d}</div>`;
+
+        datesDiv.appendChild(box);
+      }
+
+      calendar.appendChild(section);
+    });
+  </script>
+
+  <button class="voice-button" onclick="startRecording()"></button>
 </div>
 
 
@@ -279,18 +315,46 @@ function sendToBackend(user_input) {
   .then(response => response.json())
   .then(data => {
     console.log("Backend response:", data);
+    addEventAI(data);
   })
   .catch(error => {
     console.error("Error:", error);
   });
 }
 
+//Takes json and add event
+function addEventAI(response){
+
+  const targetDate = response.date;
+  const title = response.title;
+
+  const boxes = document.querySelectorAll(".date-box");
+
+  let found = null;
+
+  boxes.forEach(box => {
+    if (box.getAttribute("data-day") === targetDate) {
+      found = box;
+    }
+  });
+
+  if (!found) {
+    console.error("Date not found:", targetDate);
+    return;
+  }
+
+  const task = document.createElement("div");
+  task.className = "task";
+  task.textContent = title;
+
+  found.appendChild(task);
+}
 
 function addTask() {
 
-  // Store day and task inputs
-  const day = document.getElementById("dayInput").value;
-  const taskText = document.getElementById("taskInput").value.trim();
+// Store day and task inputs
+const day = `2026-04-${String(document.getElementById("dayInput").value).padStart(2, "0")}`;  
+const taskText = document.getElementById("taskInput").value.trim();
 
   //Error handlings
   if (!day || !taskText) return;
@@ -316,6 +380,5 @@ function addTask() {
   document.getElementById("dayInput").value = "";
 }
 </script>
-
 </body>
 </html>

@@ -21,5 +21,6 @@ from api.views import add_event, hello
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', hello),
+    #Returns response.text with json data
     path('add_event/',add_event, name="add_even" )
 ]

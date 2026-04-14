@@ -10,7 +10,6 @@ from google import genai
 def hello(request):
     return render(request,"calendar.html")
 
-
 @csrf_exempt
 def add_event(request):
     if request.method == "POST":
@@ -40,26 +39,16 @@ def add_event(request):
             #Get the valid JSON from AI 
             print(response.text)
 
-
-
-
-
             #PENDING
             #return response.txt to frontend
             #In frontend, make logical function to execute json to action
             #Pass that json response to the function
             #Test
 
-
-
-
             print("User said:", user_input)
 
             # For now, just return it back
-            return JsonResponse({
-                "status": "success",
-                "received_user_input": user_input
-            })
+            return JsonResponse(response.text,safe=False)
 
         except Exception as e:
             return JsonResponse({
