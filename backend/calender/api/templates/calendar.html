@@ -1,19 +1,53 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dynamic Calendar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendar Month View</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="calendar">
-    <div class="calendar-header">
-      <button id="prev-month">‹</button>
-      <div id="month-year"></div>
-      <button id="next-month">›</button>
-    </div>
-    <div class="calendar-body">
-      <div class="calendar-weekdays">
-        <!-- Weekday Names -->
+  <main class="app-shell">
+    <section class="calendar-card">
+      <header class="toolbar">
+        <div class="toolbar-left">
+          <div class="date-badge">
+            <span id="month-short" class="month-short">APR</span>
+            <span id="today-number" class="today-number">20</span>
+          </div>
+          <div class="month-meta">
+            <div class="month-line">
+              <h1 id="month-year">April 2026</h1>
+              <span id="week-pill" class="week-pill">Week 3</span>
+            </div>
+            <p id="month-range">Apr 1, 2026 - Apr 30, 2026</p>
+          </div>
+        </div>
+
+        <div class="toolbar-right">
+          <button class="icon-btn" aria-label="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+
+          <div class="date-nav">
+            <button id="prev-month" class="arrow-btn" aria-label="Previous month">&larr;</button>
+            <button id="today-btn" class="today-btn" type="button">Today</button>
+            <button id="next-month" class="arrow-btn" aria-label="Next month">&rarr;</button>
+          </div>
+
+          <button class="view-btn" type="button">Month view <span>&#9662;</span></button>
+          <button class="add-btn" type="button">+ Add event</button>
+        </div>
+      </header>
+
+      <div class="calendar-grid">
+        <div class="weekdays">
           <div>Sun</div>
           <div>Mon</div>
           <div>Tue</div>
@@ -21,13 +55,40 @@
           <div>Thu</div>
           <div>Fri</div>
           <div>Sat</div>
-      </div>
-      <div class="calendar-dates">
-        <!-- Dates will be populated here -->
-      </div>
-    </div>
-  </div>
+        </div>
 
+        <div class="calendar-dates"></div>
+      </div>
+    </section>
+    <section class="input">
+        <div class="card">
+
+          <div class="title">Add Event</div>
+
+          <label>Title</label>
+          <input type="text" placeholder="Call with John">
+
+          <label>Date</label>
+          <input type="date">
+
+          <div class="or">or</div>
+
+          <button id="voice-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+              <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+              <path d="M5 10a7 7 0 0 0 14 0"></path>
+              <line x1="12" y1="17" x2="12" y2="22"></line>
+              <line x1="8" y1="22" x2="16" y2="22"></line>
+            </svg>
+          </button>
+          <div class="actions">
+            <button class="cancel">Cancel</button>
+            <button class="submit">Submit</button>
+          </div>
+
+        </div>
+    </section>
+  </main>
   <script src="script.js"></script>
 </body>
 </html>

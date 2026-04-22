@@ -6,19 +6,45 @@
     <title>Document</title>
     <style>
         #calendar {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr); /* 7 days */
-        gap: 8px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
         }
 
         .day {
-        border: 1px solid #ccc;
-        min-height: 80px;
-        padding: 5px;
-} 
+            border: 1px solid #ccc;
+            min-height: 80px;
+            padding: 5px;
+        }
     </style>
+
+    <!-- 1. Load React first (no type="text/babel") -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- 2. Load Babel last -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
     <div id="calendar"></div>
+
+    <!-- 3. YOUR script gets type="text/babel" -->
+    <script type="text/babel">
+        function Calendar() {
+            const days = Array.from({ length: 30 }, (_, i) => i + 1);
+
+            return (
+                <>
+                    {days.map(day => (
+                        <div className="day" key={day}>
+                            {day}
+                        </div>
+                    ))}
+                </>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('calendar'));
+        root.render(<Calendar />);
+    </script>
 </body>
 </html>
