@@ -483,3 +483,15 @@ input:focus {
   color: white;
   cursor: pointer;
 }
+
+
+.date-box{
+
+	padding: 10px;
+	font-size: small;
+	border: 1px solid #e5e7eb;
+}
+
+.today{
+	color:blue;
+}
