@@ -13,10 +13,12 @@ const startVoiceBtn = document.getElementById('start-voice');
 const stopVoiceBtn = document.getElementById('stop-voice');
 const clearVoiceBtn = document.getElementById('clear-voice');
 
+//Current Date and Time Retrieval(Non-const so Let is used)
 const today = new Date();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
+//Month is actually 0-11
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
@@ -27,28 +29,31 @@ const monthAbbr = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
 
-// Optional event source from template/backend. Format:
-// { "YYYY-MM-DD": [{ title: "Meeting", time: "10:00 AM", color: "blue" }] }
-const calendarEvents = window.calendarEvents || {};
-
+//Convert to YYYY-MM-DD format
 function isoDate(year, month, day) {
   const mm = String(month + 1).padStart(2, '0');
   const dd = String(day).padStart(2, '0');
   return `${year}-${mm}-${dd}`;
 }
 
+//Week number
 function getWeekOfMonth(dateObj) {
   return Math.ceil(dateObj.getDate() / 7);
 }
 
+//Update the date header in the calender
 function updateHeader(month, year) {
+  //Main Title "January 2026"
   monthYear.textContent = `${months[month]} ${year}`;
 
+  //Subtitle "Jan 1, 2026 - Jan 31, 2026"
   const startLabel = `${monthAbbr[month]} 1, ${year}`;
+  //to get the last date of the month
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const endLabel = `${monthAbbr[month]} ${daysInMonth}, ${year}`;
   monthRange.textContent = `${startLabel} - ${endLabel}`;
 
+  
   const isCurrentMonth = month === today.getMonth() && year === today.getFullYear();
   const weekNumber = isCurrentMonth ? getWeekOfMonth(today) : 1;
   weekPill.textContent = `Week ${weekNumber}`;
