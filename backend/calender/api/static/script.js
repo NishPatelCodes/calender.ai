@@ -11,7 +11,7 @@ const voiceStatus = document.getElementById('voice-status');
 const voiceText = document.getElementById('voice-text');
 const startVoiceBtn = document.getElementById('start-voice');
 const stopVoiceBtn = document.getElementById('stop-voice');
-const clearVoiceBtn = document.getElementById('clear-voice');
+const calendarEvents = {};
 
 //Current Date and Time Retrieval(Non-const so Let is used)
 const today = new Date();
@@ -88,7 +88,6 @@ function createDayCell({ dayNumber, year, month, isOtherMonth }) {
   ) {
     dateLabel.classList.add('current');
   }
-
   cell.appendChild(dateLabel);
 
   const dayEvents = calendarEvents[cell.dataset.date] || [];
@@ -191,9 +190,11 @@ calendarDates.addEventListener('click', (event) => {
   }
 });
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+//Speech library object
+const SpeechRecognition = window.SpeechRecognition;
 let recognition = null;
 
+//to change the status button
 function setVoiceStatus(message, isListening = false) {
   if (!voiceStatus) {
     return;
@@ -203,39 +204,55 @@ function setVoiceStatus(message, isListening = false) {
   voiceStatus.classList.toggle('listening', isListening);
 }
 
-if (voiceText && startVoiceBtn && stopVoiceBtn && clearVoiceBtn) {
+//speech logic
+if (voiceText && startVoiceBtn && stopVoiceBtn) {
+
   if (SpeechRecognition) {
     recognition = new SpeechRecognition();
-    recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US';
 
+    //when clicked record button
     recognition.onstart = () => {
       setVoiceStatus('Listening... speak now', true);
     };
-
+    
+    //On every interim end(word)
     recognition.onresult = (event) => {
       let transcript = '';
       for (let i = event.resultIndex; i < event.results.length; i++) {
         transcript += event.results[i][0].transcript;
       }
-      voiceText.value = `${voiceText.value} ${transcript}`.trim();
+      voiceText.value = `${transcript}`.trim();
+      const lastResult = event.results[event.results.length - 1];
+
+      // if (lastResult.isFinal) {
+      //   await sendToBackend(transcript.trim());
+      // }
     };
+
+    //auto stop when gap happends
+    recognition.onspeechend = () => {
+      recognition.stop();
+    };    
 
     recognition.onerror = () => {
       setVoiceStatus('Microphone error. Please allow microphone access.', false);
     };
 
+    //when all done, status back to ready to listen
     recognition.onend = () => {
       if (voiceStatus.classList.contains('listening')) {
         setVoiceStatus('Ready to listen', false);
       }
     };
 
+    //button logics, startVoiceBtn -> start
     startVoiceBtn.addEventListener('click', () => {
       recognition.start();
     });
 
+    //stopVoiceBtn -> stop
     stopVoiceBtn.addEventListener('click', () => {
       recognition.stop();
       setVoiceStatus('Stopped', false);
@@ -246,8 +263,10 @@ if (voiceText && startVoiceBtn && stopVoiceBtn && clearVoiceBtn) {
     stopVoiceBtn.disabled = true;
   }
 
-  clearVoiceBtn.addEventListener('click', () => {
-    voiceText.value = '';
-    setVoiceStatus('Ready to listen', false);
-  });
 }
+
+// function sendToBackend(context){
+
+
+
+// }
