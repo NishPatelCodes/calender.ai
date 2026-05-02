@@ -191,7 +191,7 @@ calendarDates.addEventListener('click', (event) => {
 });
 
 //Speech library object
-const SpeechRecognition = window.SpeechRecognition;
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 
 //to change the status button
@@ -226,9 +226,9 @@ if (voiceText && startVoiceBtn && stopVoiceBtn) {
       voiceText.value = `${transcript}`.trim();
       const lastResult = event.results[event.results.length - 1];
 
-      // if (lastResult.isFinal) {
-      //   await sendToBackend(transcript.trim());
-      // }
+      if (lastResult.isFinal) {
+      sendToBackend(transcript.trim());
+      }
     };
 
     //auto stop when gap happends
@@ -262,11 +262,29 @@ if (voiceText && startVoiceBtn && stopVoiceBtn) {
     startVoiceBtn.disabled = true;
     stopVoiceBtn.disabled = true;
   }
-
 }
 
-// function sendToBackend(context){
+async function sendToBackend(context) {
+  try {
+    const response = await fetch('/ai/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_input: context
+      }),
+    });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
 
+    const data = await response.json();   // read backend JSON
+    console.log(data);
 
-// }
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}

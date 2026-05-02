@@ -25,6 +25,13 @@ body {
 	
 }
 
+/* Keep the desktop UI from feeling visually zoomed out. */
+@media (min-width: 1024px) {
+	body {
+		zoom: 0.75;
+	}
+}
+
 .app-shell {
 	width: min(1400px, 100% - 20px);
 	margin: 10px auto;

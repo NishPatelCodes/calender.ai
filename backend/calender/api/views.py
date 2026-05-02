@@ -11,7 +11,7 @@ def hello(request):
     return render(request,"calendar.html")
 
 @csrf_exempt
-def add_event(request):
+def ai_response(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)   # parse JSON
@@ -24,36 +24,27 @@ def add_event(request):
 
             #pass model and query
             response = client.models.generate_content(
-                model="gemini-3-flash-preview", 
-                contents = f"""
-                    Convert the following input into JSON.
-                    User input: {user_input}
-                    Return ONLY valid JSON in this format:
-                    {{
+                model="gemini-2.5-flash",
+                contents=f"""
+                Convert the following input into JSON.
+
+                User input: {user_input}
+
+                Return ONLY valid JSON:
+                {{
                     "action": "add_event",
                     "title": "...",
                     "date": "YYYY-MM-DD"
-                    }}
-                    """)
-            
-            #Get the valid JSON from AI 
+                }}
+                """
+            )
             print(response.text)
+            data = json.loads(response.text)
+            return JsonResponse(data)
 
-            #PENDING
-            #return response.txt to frontend
-            #In frontend, make logical function to execute json to action
-            #Pass that json response to the function
-            #Test
 
-            print("User said:", user_input)
-
-            # For now, just return it back
-            return JsonResponse(response.text,safe=False)
-
-        except Exception as e:
-            return JsonResponse({
-                "status": "error",
-                "message": str(e)
-            }, status=400)
-
-    return JsonResponse({"error": "Only POST allowed"}, status=405)
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "Invalid JSON returned by model"},
+                status=500
+            )

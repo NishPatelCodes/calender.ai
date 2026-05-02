@@ -16,11 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import add_event, hello
+from api.views import ai_response, hello
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', hello),
-    #Returns response.text with json data
-    path('add_event/',add_event, name="add_even" )
+    path('', hello, name="home"),
+    path('ai/',ai_response, name="ai_response" )
 ]
